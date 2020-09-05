@@ -49,10 +49,10 @@ reachout_df = pd.read_csv("resp/reachout.csv")
 st.write(reachout_df)
 st.write(reachout_df.groupby(['BestReach']).mean())
 
-reachout_df.groupby('BestReach')['Emailaddress'].nunique().plot(kind='bar')
+reachout_df.groupby('BestReach')['Emailaddress'].nunique().plot(kind='bar', color=('red', 'blue', 'green', 'purple', 'yellow'))
 st.write(plt.title('Graph showing Student Selected Reach Outs'))
-st.write(plt.xticks(np.arange(5), ('Email', 'WhatsApp','SMS', 'Zoom', 'Google Meet')))
-(plt.show())
+st.write(plt.xticks(np.arange(5), ('E', 'W','S', 'Z', 'GM')))
+st.write(plt.show())
  
 
 #   ############# Mechanism
