@@ -45,3 +45,16 @@ st.write(mechanism_split_df)
 
 mechanism_split_df.groupby('PreferredMechanism')['Emailaddress'].nunique().plot(kind='bar')
 st.write(plt.show())
+
+
+reachgraph = go.Figure(
+    data=[go.Bar(
+        x = reachout_df.BestReachNames,
+        y = reachout_df.BestReach,
+        )],
+    layout_title_text="A Figure Displayed with fig.show()"
+)
+reachgraph.update_layout(title='Graph showing Student Selected Reach Outs', autosize=False,
+                  width=800, height=800,
+                  margin=dict(l=40, r=40, b=40, t=40))
+st.plotly_chart(reachgraph)
