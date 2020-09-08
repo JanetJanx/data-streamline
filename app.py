@@ -6,7 +6,7 @@ import multiprocessing
 from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
-
+import json
 import plotly.graph_objects as go
 
 
@@ -20,7 +20,7 @@ from the students' responses. About 300 students have responded!
 
 df = pd.read_csv("resp/data-responses.csv")
 # df = st.cache(pd.read_csv)("resp/data-responses.csv")
-
+st.sidebar.subheader('Our Dashboard')
 option = st.sidebar.multiselect(
     'What is the best way to reach you?',
      df['BestReach'].unique())
@@ -31,7 +31,6 @@ options = st.sidebar.multiselect(
  'What mechanism would you prefer?', df['PreferredMechanism'].unique())
  
 # st.write('You selected:', options)
-
 new_df = df[(df['BestReach'].isin(option)) & (df['PreferredMechanism'].isin(options))]
 st.sidebar.write(new_df)
 
@@ -83,13 +82,23 @@ plt.title('Graph showing Student Selected Preferred Mechanism')
 plt.xticks(np.arange(5), ('Both Online and Face to Face', 'Online on Campus','Online at Home', 'Face to Face on Campus', 'Face to Face by location'), fontsize = 5)
 st.pyplot()
 
-st.subheader('Crime Location on Map - Select the day of a Month')
-filter = st.slider('', 1, 31, 5)
-Location_Filter = df[df['District'] == filter]
+st.sidebar.subheader('Student Locations')
+# filter = st.slider('', 1, 31, 5)
+# Location_Filter = df[df['District'] == filter]
+location_df = df['District'].value_counts()
+# location_df.to_csv(r'resp/location.csv')
+
+loca_df = pd.read_csv("resp/location.csv")
+st.sidebar.write(loca_df)
+
+df['District'].value_counts(sort=True).nlargest(50).plot.bar()
+plt.title('Graph showing the first 50 districts with the highest number of students')
+plt.xticks(fontsize =8)
+st.pyplot()
 
 # Map to show the physical locations of Crime for the selected day.
-midpoint = (np.average(Location_Filter["lat"]), np.average(Location_Filter["lon"]))
-
+midpoint = (np.average(loca_df["lat"]), np.average(loca_df["lon"]))
+# st.pydeck_chart widget
 st.deck_gl_chart(
     viewport={
         "latitude": midpoint[0],
@@ -100,7 +109,7 @@ st.deck_gl_chart(
     layers=[
         {
             "type": "HexagonLayer",
-            "data": Crime_Filter,
+            "data": loca_df,
             "radius": 80,
             "elevationScale": 4,
             "elevationRange": [0, 1000],

@@ -58,3 +58,10 @@ reachgraph.update_layout(title='Graph showing Student Selected Reach Outs', auto
                   width=800, height=800,
                   margin=dict(l=40, r=40, b=40, t=40))
 st.plotly_chart(reachgraph)
+
+with open('resp/ugandadistricts.geojson') as f:
+    data = json.load(f)
+# content = response['features']['properties']['Subregion']
+for feature in data['features']:
+    print(feature['properties']['Subregion'])
+    print(feature['geometry']['coordinates'])
