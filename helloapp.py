@@ -65,3 +65,14 @@ with open('resp/ugandadistricts.geojson') as f:
 for feature in data['features']:
     print(feature['properties']['Subregion'])
     print(feature['geometry']['coordinates'])
+
+suppress_deprecation_warning = st.config.get_option(
+    "global.suppressDeprecationWarnings"
+    )
+if not suppress_deprecation_warning:
+    import streamlit as st
+
+    st.warning("""
+        The `deck_gl_chart` widget is deprecated and will be removed on
+        2020-05-01. To render a map, you should use `st.pydeck_chart` widget.
+    """)
